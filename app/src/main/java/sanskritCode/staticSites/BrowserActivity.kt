@@ -18,7 +18,7 @@ class BrowserActivity : BaseActivity() {
     }
 
     private fun setupContentContainer() {
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_browser)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
     }
 
