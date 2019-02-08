@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.content.pm.PackageManager.NameNotFoundException
 import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
@@ -31,7 +32,7 @@ abstract class BaseActivity : AppCompatActivity() {
             try {
                 val pInfo    = this.packageManager.getPackageInfo(packageName, 0)
                 return pInfo.versionName
-            } catch (e: PackageManager.NameNotFoundException) {
+            } catch (e: NameNotFoundException) {
                 Log.w(LOGGER_TAG, "getVersion:" + "Version getting failed.")
                 e.printStackTrace()
                 return "Version getting failed."
