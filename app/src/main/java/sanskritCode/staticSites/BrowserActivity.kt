@@ -7,6 +7,7 @@ import android.os.Environment
 import android.view.WindowManager
 import android.webkit.CookieManager
 import android.webkit.WebView
+import sanskritCode.downloaderFlow.BaseActivity
 
 
 class BrowserActivity : BaseActivity() {
@@ -42,25 +43,23 @@ class BrowserActivity : BaseActivity() {
     }
 
     private fun setupWebViewCookieStorage(webView: WebView) {
-        if (Build.VERSION.SDK_INT >= 21) {
-            CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true)
-        }
+        CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true)
     }
 
     private fun setupWebViewSettings(webView: WebView) {
         val webSettings = webView.settings
         webSettings.javaScriptEnabled = true
         webSettings.domStorageEnabled = true
-        webSettings.setAllowFileAccessFromFileURLs(true);
-        webSettings.setAllowUniversalAccessFromFileURLs(true);
-        webSettings.setLoadWithOverviewMode(true);
-        webSettings.setUseWideViewPort(true);
-        webSettings.setBuiltInZoomControls(true);
-        webSettings.setDisplayZoomControls(false);
-        webSettings.setSupportZoom(true);
-        webSettings.setDefaultTextEncodingName("utf-8");
+        webSettings.setAllowFileAccessFromFileURLs(true)
+        webSettings.setAllowUniversalAccessFromFileURLs(true)
+        webSettings.setLoadWithOverviewMode(true)
+        webSettings.setUseWideViewPort(true)
+        webSettings.setBuiltInZoomControls(true)
+        webSettings.setDisplayZoomControls(false)
+        webSettings.setSupportZoom(true)
+        webSettings.setDefaultTextEncodingName("utf-8")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            WebView.setWebContentsDebuggingEnabled(true);
+            WebView.setWebContentsDebuggingEnabled(true)
         }
         webView.setWebViewClient(browserWebClient)
     }
@@ -72,11 +71,11 @@ class BrowserActivity : BaseActivity() {
         setupWebView(savedInstanceState);
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         // Always call the superclass so it can save the view hierarchy state
         super.onSaveInstanceState(outState)
         // Save the user's current game state
-        outState?.run {
+        outState.run {
             putString("currentUrl", currentUrl)
         }
     }
