@@ -7,10 +7,12 @@ import android.os.Environment
 import android.util.Log
 import sanskritCode.downloaderFlow.*
 import java.io.File
-import java.nio.file.Files
-import java.nio.file.Path
-import java.nio.file.Paths
+import java.io.IOException
+import java.nio.file.*
+import java.nio.file.attribute.BasicFileAttributes
 import java.util.function.Predicate
+
+
 
 class ReplaceBaseUrlActivity : BaseActivity() {
     internal val LOGGER_TAG = javaClass.getSimpleName()
@@ -22,14 +24,6 @@ class ReplaceBaseUrlActivity : BaseActivity() {
             archiveIndexStore = intent.getSerializableExtra("archiveIndexStore") as ArchiveIndexStore
         }
         setContentView(R.layout.activity_replace_base_url)
-        val sdcard = Environment.getExternalStorageDirectory()
-        val destDir = File(sdcard.absolutePath, getString(sanskritCode.downloaderFlow.R.string.df_destination_sdcard_directory))
-        for (archiveInfo in archiveIndexStore!!.archivesSelectedMap.values) {
-            if (archiveInfo.status == ArchiveStatus.EXTRACTION_SUCCESS) {
-                val extractionDir = File(destDir, archiveInfo.getDownloadedArchiveBasename())
-                // TODO : For each js, html and css file, replace baseURL with destDir.toURI.
-            }
-        }
         // TODO: Transition to a browser view which lists all installed static sites.
     }
 
@@ -40,6 +34,10 @@ class ReplaceBaseUrlActivity : BaseActivity() {
         intent.putExtra("archiveIndexStore", archiveIndexStore)
         // intent.putStringArrayListExtra();
         startActivity(intent)
+    }
+
+    fun whenAllExtracted() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
 
