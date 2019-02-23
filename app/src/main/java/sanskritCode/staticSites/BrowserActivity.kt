@@ -43,7 +43,8 @@ class BrowserActivity : BaseActivity() {
     }
 
     private fun setupWebViewCookieStorage(webView: WebView) {
-        CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true)
+        // Requires API level 19
+//        CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true)
     }
 
     private fun setupWebViewSettings(webView: WebView) {
