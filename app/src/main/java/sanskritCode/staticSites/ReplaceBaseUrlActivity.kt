@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
+import android.widget.TextView
 import sanskritCode.downloaderFlow.*
 import java.io.File
 import java.io.IOException
@@ -24,7 +25,8 @@ class ReplaceBaseUrlActivity : BaseActivity() {
             archiveIndexStore = intent.getSerializableExtra("archiveIndexStore") as ArchiveIndexStore
         }
         setContentView(R.layout.activity_replace_base_url)
-        // TODO: Transition to a browser view which lists all installed static sites.
+        val baseUrlReplacer = BaseUrlReplacer(this, archiveIndexStore!!)
+        baseUrlReplacer.execute()
     }
 
     override fun onBackPressed() {
@@ -37,7 +39,16 @@ class ReplaceBaseUrlActivity : BaseActivity() {
     }
 
     fun whenAllExtracted() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        // TODO: Transition to a browser view which lists all installed static sites.
+        val intent = Intent(this, FinalActivity::class.java)
+        intent.putExtra("archiveIndexStore", archiveIndexStore)
+        // intent.putStringArrayListExtra();
+        startActivity(intent)
+    }
+
+    fun setTopTextWhileExtracting(siteName: String) {
+        val updateTextView = findViewById<TextView>(R.id.ss_replace_baseurl_textView_update)
+        updateTextView.setText(siteName)
     }
 
 

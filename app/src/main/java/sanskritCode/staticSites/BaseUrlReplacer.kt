@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.AsyncTask
 import android.os.Environment
 import android.util.Log
+import com.google.gson.JsonParser
 import sanskritCode.downloaderFlow.ArchiveIndexStore
 import sanskritCode.downloaderFlow.ArchiveStatus
 import java.io.File
@@ -24,7 +25,7 @@ internal class BaseUrlReplacer(@SuppressLint("StaticFieldLeak") private val acti
     override fun onProgressUpdate(vararg values: String) {
         super.onProgressUpdate(*values)
 //        activity.updateProgressBar(Integer.parseInt(values[0]), Integer.parseInt(values[1]))
-//        activity.setTopTextWhileExtracting(values[2], values[3])
+        activity.setTopTextWhileExtracting(values[0])
     }
 
     fun walkAndReplace(root: File, oldValue: String, newValue: String) {
@@ -34,7 +35,7 @@ internal class BaseUrlReplacer(@SuppressLint("StaticFieldLeak") private val acti
                 Log.d(LOGGER_TAG, "Dir: " + f.absoluteFile)
                 walkAndReplace(f, oldValue, newValue)
             } else {
-                Log.d(LOGGER_TAG, "File: " + f.absoluteFile)
+                Log.d(LOGGER_TAG, "File: ${f.absoluteFile} - Replacing ${oldValue} with ${newValue}")
                 if (f.extension in listOf<String>("js", "html", "css")) {
                     val charset = StandardCharsets.UTF_8
                     var content = String(f.readBytes(), charset)
@@ -50,9 +51,14 @@ internal class BaseUrlReplacer(@SuppressLint("StaticFieldLeak") private val acti
         val destDir = File(sdcard.absolutePath, activity.getString(sanskritCode.downloaderFlow.R.string.df_destination_sdcard_directory))
         for (archiveInfo in archiveIndexStore.archivesSelectedMap.values) {
             if (archiveInfo.status == ArchiveStatus.EXTRACTION_SUCCESS) {
-                publishProgress(archiveInfo.getDownloadedArchiveBasename())
-                val extractionDir = File(destDir, archiveInfo.getDownloadedArchiveBasename())
+                val extractionDirOriginal = File(destDir, archiveInfo.getDownloadedArchiveBasename())
                 // TODO : For each js, html and css file, replace baseURL with destDir.toURI.
+                val baseURL = JsonParser().parse(archiveInfo.archiveInfoJsonStr).asJsonObject.get("baseUrl").asString
+                val extractionDir = File(destDir, baseURL.replace(regex = Regex("^https?://"), replacement = "/"))
+                Log.i(LOGGER_TAG, "Renaming ${extractionDirOriginal} to ${extractionDir}")
+                extractionDirOriginal.renameTo(extractionDir)
+                walkAndReplace(extractionDir, baseURL, extractionDir.toURI().toString())
+                publishProgress(archiveInfo.getDownloadedArchiveBasename())
             }
         }
         return null

@@ -1,1 +1,1 @@
-<https://raw.githubusercontent.com/vvasuki/vvasuki.github.io/master/siteArchives.md>
+<https://raw.githubusercontent.com/vvasuki/vvasuki.github.io/master/siteArchives.json>
