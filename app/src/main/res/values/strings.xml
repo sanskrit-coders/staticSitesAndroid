@@ -9,6 +9,6 @@
     <string name="df_finalMessage">We\'re done!! Open the files from a browser.</string>
     <string name="df_archive_version_store">sanskritCode.staticSite.archive_version_store</string>
     <string name="df_pick_archives">Which static site archives shall we install?</string>
-    <string name="df_post_exrtaction_activity" translatable="false">sanskritCode.downloaderFlow.FixBaseUrlActivity</string>
+    <string name="df_post_exrtaction_activity" translatable="false">sanskritCode.staticSites.ReplaceBaseUrlActivity</string>
     <string name="ss_replace_baseurl_title">Replacing BaseURL</string>
 </resources>

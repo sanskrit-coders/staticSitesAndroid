@@ -26,7 +26,7 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 
-    implementation 'com.github.sanskrit-coders:downloaderFlow:0.0.8@aar'
+    implementation 'com.github.sanskrit-coders:downloaderFlow:0.1.1@aar'
     // Somehow, dependencies from the above are not automatically deduces (despite downloaderFlow-0.0.2.pom containing them). Hence reincluding them below.
     implementation group: 'com.google.guava', name: 'guava', version: '27.0.1-android'
     implementation 'com.google.code.gson:gson:2.8.5'
