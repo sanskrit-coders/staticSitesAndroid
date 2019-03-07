@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Static Sites Downloader</string>
+    <string name="app_name">Static Sites Viewer</string>
     <string name="df_destination_sdcard_directory">static_sites</string>
     <string name="df_downloadsDir">/Download/static_site_zips</string>
     <string name="df_index_indexorum">https://raw.githubusercontent.com/sanskrit-coders/staticSitesAndroid/master/archiveIndices.md</string>
@@ -7,8 +7,9 @@
     <string name="df_select_indices">ॐ तत् सत्॥ Shall we update your Static Sites?
     </string>
     <string name="df_finalMessage">We\'re done!! Open the files from a browser.</string>
-    <string name="df_archive_version_store">sanskritCode.staticSite.archive_version_store</string>
+    <string name="df_archive_info_store">sanskritCode.staticSite.archive_info_store</string>
     <string name="df_pick_archives">Which static site archives shall we install?</string>
     <string name="df_post_exrtaction_activity" translatable="false">sanskritCode.staticSites.ReplaceBaseUrlActivity</string>
     <string name="ss_replace_baseurl_title">Replacing BaseURL</string>
+    <string name="update_sites">Update sites</string>
 </resources>

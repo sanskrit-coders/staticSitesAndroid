@@ -1,16 +1,24 @@
 package sanskritCode.staticSites
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.WindowManager
 import android.webkit.CookieManager
 import android.webkit.WebView
 import sanskritCode.downloaderFlow.BaseActivity
+import sanskritCode.downloaderFlow.MainActivity
 
 
 class BrowserActivity : BaseActivity() {
+    internal val LOGGER_TAG = javaClass.getSimpleName()
     val browserWebClient = BrowserWebClient()
     var currentUrl: String = "file:///android_asset/docs/index.html"
     private fun setupGlobalCookieStorage() {
@@ -47,6 +55,7 @@ class BrowserActivity : BaseActivity() {
 //        CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true)
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private fun setupWebViewSettings(webView: WebView) {
         val webSettings = webView.settings
         webSettings.javaScriptEnabled = true
@@ -67,9 +76,9 @@ class BrowserActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setupGlobalCookieStorage();
-        setupContentContainer();
-        setupWebView(savedInstanceState);
+        setupGlobalCookieStorage()
+        setupContentContainer()
+        setupWebView(savedInstanceState)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -81,4 +90,22 @@ class BrowserActivity : BaseActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.menu_activity_browser, menu)
+        Log.i(LOGGER_TAG, "creating options menu")
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle item selection
+        return when (item.itemId) {
+            R.id.menu_item_update_sites -> {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 }
