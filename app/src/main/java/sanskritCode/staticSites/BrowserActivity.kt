@@ -2,6 +2,7 @@ package sanskritCode.staticSites
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -13,8 +14,10 @@ import android.view.MenuItem
 import android.view.WindowManager
 import android.webkit.CookieManager
 import android.webkit.WebView
+import sanskritCode.downloaderFlow.ArchiveInfo
 import sanskritCode.downloaderFlow.BaseActivity
 import sanskritCode.downloaderFlow.MainActivity
+import java.io.File
 
 
 class BrowserActivity : BaseActivity() {
@@ -36,14 +39,44 @@ class BrowserActivity : BaseActivity() {
         getPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, this)
     }
 
+    private fun getStartPageHtmls(): List<String> {
+        val sharedArchiveInfoStore = getSharedPreferences(
+                getString(R.string.df_archive_info_store), Context.MODE_PRIVATE)
+        val archiveInfoMap = sharedArchiveInfoStore.all
+        val sdcard = Environment.getExternalStorageDirectory()
+        val destDir = File(sdcard.absolutePath, getString(sanskritCode.downloaderFlow.R.string.df_destination_sdcard_directory))
+        val startPageHtmls = archiveInfoMap.values.map { archiveInfoStr ->
+            val staticSiteInfo = StaticSiteInfo(archiveInfoStr as String)
+            val startPageUrl = staticSiteInfo.getStartPageUrl(destDir)
+            """<li><a href="${startPageUrl}">${startPageUrl}</a></li>"""
+        }
+        return startPageHtmls
+    }
+
     private fun setupWebView(savedInstanceState: Bundle?) {
         val webView = getWebView()
         setupWebViewCookieStorage(webView)
         setupWebViewSettings(webView)
         getPermissions()
-        val testHtmlUrl = "file://${Environment.getExternalStorageDirectory()}/Download/amazon.mhtml"
-        currentUrl = savedInstanceState?.get("currentUrl") as? String ?: testHtmlUrl
-        webView.loadUrl(currentUrl)
+        val savedUrl = savedInstanceState?.get("currentUrl") as? String
+        if (savedUrl != null) {
+            currentUrl = savedUrl
+            webView.loadUrl(currentUrl)
+        } else {
+            val startPageHtmls = getStartPageHtmls()
+            if (startPageHtmls.isEmpty()) {
+                startDownloaderFlow()
+            } else {
+                val indexListHtml = """
+                    <large>
+                    Index pages of installed sites:
+                    ${startPageHtmls.joinToString(separator = "\n", prefix = "\n<ul>", postfix = "</ul>")}
+                    </large>
+                """.trimIndent()
+                Log.d(LOGGER_TAG, indexListHtml)
+                webView.loadData(indexListHtml, "text/html; charset=utf-8", "UTF-8")
+            }
+        }
     }
 
     private fun getWebView(): WebView {
@@ -97,12 +130,16 @@ class BrowserActivity : BaseActivity() {
         return true
     }
 
+    fun startDownloaderFlow() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle item selection
         return when (item.itemId) {
             R.id.menu_item_update_sites -> {
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
+                startDownloaderFlow()
                 true
             }
             else -> super.onOptionsItemSelected(item)

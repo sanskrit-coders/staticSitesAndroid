@@ -51,9 +51,10 @@ internal class BaseUrlReplacer(@SuppressLint("StaticFieldLeak") private val acti
         val destDir = File(sdcard.absolutePath, activity.getString(sanskritCode.downloaderFlow.R.string.df_destination_sdcard_directory))
         for (archiveInfo in archiveIndexStore.archivesSelectedMap.values) {
             if (archiveInfo.status == ArchiveStatus.EXTRACTION_SUCCESS) {
-                val extractionDir = File(destDir, archiveInfo.getJsonObject().get("destinationPathSuffix").asString)
-                val replacementBaseUrlString = archiveInfo.getJsonObject().get("replacementBaseUrlString").asString
-                // TODO : For each js, html and css file, replace baseURL with destDir.toURI.
+                Log.d(LOGGER_TAG, archiveInfo.toString())
+                val staticSiteInfo = StaticSiteInfo.fromArchiveInfo(archiveInfo)
+                val extractionDir = staticSiteInfo.getExtractionDirectory(destDir)
+                val replacementBaseUrlString = staticSiteInfo.getReplacementBaseUrlMinusProtocol(destDir)
                 for (baseURL in archiveInfo.getJsonObject().get("baseUrlStringsToReplace").asJsonArray) {
                     walkAndReplace(extractionDir, baseURL.asString, replacementBaseUrlString)
                 }
