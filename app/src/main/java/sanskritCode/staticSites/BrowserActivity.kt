@@ -73,10 +73,10 @@ class BrowserActivity : BaseActivity() {
                 startDownloaderFlow()
             } else {
                 val indexListHtml = """
-                    <large>
+                    <div style="font-size: 500%">
                     Index pages of installed sites:
                     ${startPageHtmls.joinToString(separator = "\n", prefix = "\n<ul>", postfix = "</ul>")}
-                    </large>
+                    </div>
                 """.trimIndent()
                 Log.d(LOGGER_TAG, indexListHtml)
                 val indexIndexorumFile = File(getDestDir(), "index.html")
