@@ -29,6 +29,12 @@ class BrowserActivity : BaseActivity() {
         CookieManager.getInstance().setAcceptCookie(true)
     }
 
+    private fun getDestDir(): File {
+        val sdcard = Environment.getExternalStorageDirectory()
+        return File(sdcard.absolutePath, getString(sanskritCode.downloaderFlow.R.string.df_destination_sdcard_directory))
+    }
+
+
     private fun setupContentContainer() {
         setContentView(R.layout.activity_browser)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -43,8 +49,7 @@ class BrowserActivity : BaseActivity() {
         val sharedArchiveInfoStore = getSharedPreferences(
                 getString(R.string.df_archive_info_store), Context.MODE_PRIVATE)
         val archiveInfoMap = sharedArchiveInfoStore.all
-        val sdcard = Environment.getExternalStorageDirectory()
-        val destDir = File(sdcard.absolutePath, getString(sanskritCode.downloaderFlow.R.string.df_destination_sdcard_directory))
+        val destDir = getDestDir()
         val startPageHtmls = archiveInfoMap.values.map { archiveInfoStr ->
             val staticSiteInfo = StaticSiteInfo(archiveInfoStr as String)
             val startPageUrl = staticSiteInfo.getStartPageUrl(destDir)
@@ -74,7 +79,11 @@ class BrowserActivity : BaseActivity() {
                     </large>
                 """.trimIndent()
                 Log.d(LOGGER_TAG, indexListHtml)
-                webView.loadData(indexListHtml, "text/html; charset=utf-8", "UTF-8")
+                val indexIndexorumFile = File(getDestDir(), "index.html")
+                indexIndexorumFile.writeText(indexListHtml)
+
+                currentUrl = indexIndexorumFile.toURI().toURL().toString()
+                webView.loadUrl(currentUrl)
             }
         }
     }

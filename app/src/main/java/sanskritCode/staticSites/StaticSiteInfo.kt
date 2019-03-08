@@ -2,7 +2,6 @@ package sanskritCode.staticSites
 
 import sanskritCode.downloaderFlow.ArchiveInfo
 import java.io.File
-import java.io.Serializable
 
 /*
 Expected data -
@@ -18,10 +17,10 @@ Expected data -
 class StaticSiteInfo (jsonStrIn: String) : ArchiveInfo(jsonStrIn) {
     fun getExtractionDirectory(destDirBase: File) = File(destDirBase, getJsonObject().get("destinationPathSuffix").asString)
     fun getReplacementBaseUrlMinusProtocol(destDirBase: File) =
-            File(getExtractionDirectory(destDirBase),
+            File(destDirBase,
                     getJsonObject().get("replacementBaseUrlSuffix").asString).toString()
     fun getStartPageUrl(destDirBase: File) =
-            File(getExtractionDirectory(destDirBase),
+            File(destDirBase,
                     getJsonObject().get("startPage").asString).toURI().toURL()
     companion object {
         fun fromArchiveInfo(archiveInfo: ArchiveInfo) = StaticSiteInfo(archiveInfo.jsonStr)
