@@ -34,6 +34,12 @@ class BrowserActivity : BaseActivity() {
         return File(sdcard.absolutePath, getString(sanskritCode.downloaderFlow.R.string.df_destination_sdcard_directory))
     }
 
+    // Prevents the app from reverting to the start page after the
+    // "back pressed-> application back in the foreground" sequence.
+    override fun onBackPressed() {
+        // Effectively disabling back button for now.
+    }
+
 
     private fun setupContentContainer() {
         setContentView(R.layout.activity_browser)
