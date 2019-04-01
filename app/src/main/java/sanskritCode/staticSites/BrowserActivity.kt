@@ -14,6 +14,7 @@ import android.view.MenuItem
 import android.view.WindowManager
 import android.webkit.CookieManager
 import android.webkit.WebView
+import kotlinx.android.synthetic.main.activity_browser.*
 import sanskritCode.downloaderFlow.ArchiveInfo
 import sanskritCode.downloaderFlow.BaseActivity
 import sanskritCode.downloaderFlow.MainActivity
@@ -37,7 +38,7 @@ class BrowserActivity : BaseActivity() {
     // Prevents the app from reverting to the start page after the
     // "back pressed-> application back in the foreground" sequence.
     override fun onBackPressed() {
-        // Effectively disabling back button for now.
+        browserWebClient.goBack(main_webview)
     }
 
 
