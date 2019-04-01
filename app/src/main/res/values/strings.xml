@@ -12,4 +12,5 @@
     <string name="df_post_exrtaction_activity" translatable="false">sanskritCode.staticSites.ReplaceBaseUrlActivity</string>
     <string name="ss_replace_baseurl_title">Replacing BaseURL - plz wait.</string>
     <string name="update_sites">Update sites</string>
+    <string name="df_post_completion_activity" translatable="false">sanskritCode.staticSites.BrowserActivity</string>
 </resources>
